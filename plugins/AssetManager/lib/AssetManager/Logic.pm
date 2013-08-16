@@ -20,6 +20,7 @@ sub convert {
   my @asset_ids = split(/,/,$asset_ids );
 
   my $test_string = $flag_test ? "(test mode)":"";
+  my $plugin = MT->component('AssetManager');
     
   my $log_messages = [];
   local_log( "Convert starts $test_string" . POSIX::strftime("%Y/%m/%d %H:%M:%S",localtime) );
@@ -31,11 +32,11 @@ sub convert {
   for my $asset_id (@asset_ids) {
     my $asset = MT::Asset->load( $asset_id );
     if ($asset->blog_id != $blog_id) {
-      $validate_message = "Assets must blong to blog " . $blog->name . "(" . $blog->id . ")";
+      $validate_message = $plugin->translate( 'validation.all assets must blongs_to blog [_1] ( [_2] ).' , $blog->name , $blog->id );
       last;
     } 
     if ($asset->parent) {
-      $validate_message = "Assets with parent can not be moved ( for asset id = " . $asset_id . ").";
+      $validate_message = $plugin->translate( 'validation.asset [_1] can not moved because of parent.' , $asset_id );
       last;
     }
   }
@@ -50,20 +51,20 @@ sub convert {
 
   if (! $validate_message) {	   
     if ($new_path !~ /^%r/) {
-      $validate_message = "Path must start with %r.  (e.g.)  %r/upload/images/ ";
+      $validate_message = $plugin->translate( 'validation.new path must be start with %r.' );
     } elsif ($new_path !~ /\/$/) {
-      $validate_message = "Path must end with /.  (e.g.)  %r/upload/images/ ";
+      $validate_message = $plugin->translate( 'validation.new path must be end with /.' );
     } elsif ($new_path eq $old_path) {
-      $validate_message = "New path must be different from old path. ";
+      $validate_message = $plugin->translate( 'validation.new path must be different from old path.' );
     } elsif (! $fmgr->exists( $root )) {
-      $validate_message = "No root directory " . $root ;
+      $validate_message = $plugin->translate( 'validation.no root directory [_1].' ,  $root ) ;
     }
   }
   
   if (! $validate_message) {
     foreach my $chunk (@new_path_splits) {
       if ($chunk =~ /^\.{1,2}$/) {
-        $validate_message = "Invalid path. ";
+        $validate_message = $plugin->translate(  'validation.invalid path.' );
       }
     }
   }
@@ -74,7 +75,7 @@ sub convert {
 
   my $dircache = {};
   if (! can_write_dir($root,$fmgr,$dircache)) {
-    $validate_message = "Directory " . $root . " can not be written.";
+    $validate_message = $plugin->translate( 'validation.directory [_1] can not be written.' ,  $root );
   } 
   
   if ($validate_message) { # second type of validation
@@ -132,15 +133,17 @@ sub convert {
         if (! $flag_test) {
           die( $fmgr->errstr );
         } else {
-          return { success => 0  , message => "The dir " . $dir . " can not be written." };
+          return { success => 0  , message => $plugin->translate( 'validation.directory [_1] can not be written.' ,  $dir ) };
         }
       }
     }
     if (! $flag_test) {   
-      $fmgr->rename( $old_abs_file_path , $new_abs_file_path ) || die( $fmgr->errstr );
+      if ($fmgr->exists( $old_abs_file_path) ) {
+        $fmgr->rename( $old_abs_file_path , $new_abs_file_path ) || die( $fmgr->errstr );
+      }
     } else {
       if ( ! can_write_file( $new_abs_file_path , $fmgr,$dircache ) ) {
-         return { success => 0  , message => "The file " . $new_abs_file_path . " can not be written." };
+         return { success => 0  , message => $plugin->translate( 'validation.file [_1] can not be written.' , $new_abs_file_path ) };
       } 
     }
 
@@ -213,6 +216,7 @@ sub replace_assets {
   my $iter = MT::Asset->load_iter( { blog_id => $blog_id , class=> 'file' , file_ext => 'html' } );
   my $quoted_old_url = quotemeta $old_url;
   my $fmgr = MT::FileMgr->new('Local');
+  my $plugin = MT->component('AssetManager');
 
   while (my $asset = $iter->()) {
     if (my $data = $fmgr->get_data( $asset->file_path ) ) {
@@ -224,7 +228,7 @@ sub replace_assets {
             local_log( "change html: " . $asset->file_path , $log_messages );
           } else {
             if ( ! can_write_file( $asset->file_path , $fmgr,$dircache ) ) {
-              return { success => 0  , message => "The file " . $asset->file_path . " can not be written." };
+              return { success => 0  , message => $plugin->translate( 'validation.file [_1] can not be written.' ,  $asset->file_path ) };
             }
           }
         }

@@ -50,8 +50,7 @@ sub hndl_method {
   
   if (scalar( @ids ) > $my_max) {
     my %param;
-    $param{message} = "Too much items are selected. Please smaller than " . $my_max . ". You can set this value by AssetManagerMaxSize parameter in mt-config.";
-#    $param{max_converts} = $my_max;
+    $param{message} = $plugin->translate("validation.too much items, smaller than [_1].", $my_max);
     return $app->load_tmpl('error.tmpl',\%param);
   } 
   
@@ -59,12 +58,13 @@ sub hndl_method {
     my $asset = MT::Asset->load( $asset_id );
     if ($asset->blog_id != $blog_id) {
       my %param;
-      $param{message} = "All assets must blongs_to blog " . $blog->name . "(" . $blog->id . ")";;
+      $param{message} = $plugin->translate("validation.all assets must blongs_to blog [_1] ( [_2] )." , $blog->name , $blog->id );
       return $app->load_tmpl('error.tmpl',\%param);
     }
     if ($asset->parent) {
       my %param;
-      $param{message} = "Assets with parent can not moved ( for asset id = " . $asset_id . ")";
+      $param{message} = $plugin->translate("validation.asset [_1] can not moved because of parent." , $asset_id );
+#      $param{message} = "Assets with parent can not moved ( for asset id = " . $asset_id . ")";
       return $app->load_tmpl('error.tmpl',\%param);
       
     }

@@ -22,31 +22,31 @@ function is_valid_path(path_){
 </script>
 
 
- <h3>アイテムパスの変更</h3>
+ <h3><__trans phrase='tmpl.change_itempath'></h3>
  
- <div>変更対象となるアイテム数(最大：<$mt:var name="max_converts"$>)</div>
+ <div><__trans phrase='tmpl.number of target items max [_1]' params='<$mt:var name="max_converts"$>'></div>
  <div><$mt:getVar name="assets_count" $></div>
 
 <div style="margin:20px;"></div>
 
- <div>選択したアイテムのパスの共通部分</div>
+ <div><__trans phrase='tmpl.selected item path common part'></div>
  <div><$mt:getVar name="old_path" $> </div>
 
 <div style="margin:20px;"></div>
 
- <div>新しい共通部分 (最後は/で終わります)</div>
+ <div><__trans phrase='tmpl.new path common part'></div>
 <form action="<mt:var name="script_url">?__mode=asset_manager&blog_id=<mt:var name="blog_id"\>" method="post" onsubmit="return validate(this)">
 
 <input type="hidden" name="asset_ids" value="<mt:var name="asset_ids"/>" />
 <input type="hidden" name="old_path" value="<mt:var name="old_path"/>" />
 <input type="text" name="new_path" value="<mt:var name="new_path"/>" />
 <br />
-<input type="checkbox" name="flag_change_entries" value="1" <mt:if name="flag_change_entries">checked=checked</mt:if> /> エントリーの記事の本文、もっと読む、概要に埋め込まれたurlも変更する 
+<input type="checkbox" name="flag_change_entries" value="1" <mt:if name="flag_change_entries">checked=checked</mt:if> /> <__trans phrase='tmpl.change entries text, text more, excerpt.'> 
 <br />
-<input type="checkbox" name="flag_change_assets" value="1" <mt:if name="flag_change_assets">checked=checked</mt:if> /> アイテム (htmlファイル)に埋め込まれたurlも変更する  
+<input type="checkbox" name="flag_change_assets" value="1" <mt:if name="flag_change_assets">checked=checked</mt:if> /> <__trans phrase='tmpl.change url in item (html file)'>  
 <br />
 <br />
-<input type="checkbox" name="flag_test" value="1" <mt:if name="flag_test">checked=checked</mt:if> /> テスト実行
+<input type="checkbox" name="flag_test" value="1" <mt:if name="flag_test">checked=checked</mt:if> /> <__trans phrase='tmpl.test commit'>
 <br />  
 
 
@@ -55,15 +55,14 @@ function is_valid_path(path_){
 <div style="color: #ff3f3f"><b><mt:var name="validate_message"></b></div>
 </mt:if>
 <mt:if name="test_result">
-<div style="color: #ff3f3f"><b>Test OK</b></div>
+<div style="color: #ff3f3f"><b><__trans phrase='tmpl.testOK'></b></div>
 </mt:if>
-<input type="submit" name="commit" value="変更" />
+<input type="submit" name="commit" value="<__trans phrase='tmpl.change'>" />
 </form>
 
 <div style="margin:20px;"></div>
 
-<p>※ %rは、ブログ／ウェブサイトのルートを表します。<br />
-AssetManagerプラグインでは、%rから始まるディレクトリにしか移動することは出来ません。</p>
+<__trans phrase='tmpl.explain %r'>
 
 <$mt:include name="include/footer.tmpl"$>
 
