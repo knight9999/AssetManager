@@ -12,17 +12,17 @@ my $max_converts = 50;
 
 
 sub file_path_bulk_html {
-	my ( $prop, $assets, $app, $opts ) = @_;
-	# load objectassets
-	my @asset_ids = map { $_->id } @$assets;
-	my @obj_assets = $app->model('objectasset')->load( { asset_id => \@asset_ids, } );
-	
-	my @rows;
-	for my $asset (@$assets) {
-		my $path = $asset->MT::Asset::SUPER::file_path();
-		push @rows, $path;
-	}
-	return @rows;
+  my ( $prop, $assets, $app, $opts ) = @_;
+  # load objectassets
+  my @asset_ids = map { $_->id } @$assets;
+  my @obj_assets = $app->model('objectasset')->load( { asset_id => \@asset_ids, } );
+
+  my @rows;
+  for my $asset (@$assets) {
+  my $path = $asset->MT::Asset::SUPER::file_path();
+    push @rows, $path;
+  }
+  return @rows;
 }
 
 sub hndl_method {
@@ -37,7 +37,7 @@ sub hndl_method {
   }   
 
   if ($app->param('commit') ) {
-	return action_finish($app);
+    return action_finish($app);
   }
   
   my $common_path = "";
@@ -56,7 +56,7 @@ sub hndl_method {
   } 
   
   for my $asset_id (@ids) {
-  	my $asset = MT::Asset->load( $asset_id );
+    my $asset = MT::Asset->load( $asset_id );
     if ($asset->blog_id != $blog_id) {
       my %param;
       $param{message} = "All assets must blongs_to blog " . $blog->name . "(" . $blog->id . ")";;
@@ -144,15 +144,15 @@ sub action_finish {
     my $old_path = $app->param('old_path');
     my $new_path = $app->param('new_path');
 
-   	my $result = AssetManager::Logic::convert( $app , {
-   	  blog_id => $blog_id, 
-   	  asset_ids_str => $asset_ids_str, 
-   	  flag_change_entries => $flag_change_entries,
-   	  flag_change_assets => $flag_change_assets, 
-   	  old_path => $old_path, 
-   	  new_path => $new_path ,
-   	  flag_test => $flag_test
-   	} );
+    my $result = AssetManager::Logic::convert( $app , {
+      blog_id => $blog_id, 
+      asset_ids_str => $asset_ids_str, 
+      flag_change_entries => $flag_change_entries,
+      flag_change_assets => $flag_change_assets, 
+      old_path => $old_path, 
+      new_path => $new_path ,
+      flag_test => $flag_test
+    } );
 
     if ($flag_test || ! $result->{success}) {
       my %param;
@@ -162,7 +162,7 @@ sub action_finish {
       $param{new_path} = $new_path;
       $param{asset_ids} = $asset_ids_str;
       $param{assets_count} = scalar( @asset_ids ); 
-	  $param{flag_change_entries} = $flag_change_entries;
+      $param{flag_change_entries} = $flag_change_entries;
       $param{flag_change_assets} = $flag_change_assets;
       $param{flag_test} = $flag_test;
       $param{test_result} = $result->{success} if $flag_test;

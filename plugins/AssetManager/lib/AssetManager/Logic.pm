@@ -29,7 +29,7 @@ sub convert {
   # Assets must belong to this blog.
   # Assets with parent can not converted.
   for my $asset_id (@asset_ids) {
-  	my $asset = MT::Asset->load( $asset_id );
+    my $asset = MT::Asset->load( $asset_id );
     if ($asset->blog_id != $blog_id) {
       $validate_message = "Assets must blong to blog " . $blog->name . "(" . $blog->id . ")";
       last;
@@ -88,9 +88,9 @@ sub convert {
     
   for my $asset_id (@asset_ids) {
 
-	local_log( "> asset: " . $asset_id   );	
+    local_log( "> asset: " . $asset_id   );	
 
-  	my $asset = MT::Asset->load( $asset_id );
+    my $asset = MT::Asset->load( $asset_id );
 
     my $old_abs_file_url = $asset->url;
     my $old_abs_file_path = $asset->file_path;
@@ -110,7 +110,7 @@ sub convert {
 
     if (! $flag_test) {
       $asset->save;
-	}	
+    }
 #    $asset->clear_cache;
 #    my $new_abs_file_path = $asset->file_path;		
 #    my $new_abs_file_url = $asset->url;
@@ -138,20 +138,20 @@ sub convert {
     }
     if (! $flag_test) {   
       $fmgr->rename( $old_abs_file_path , $new_abs_file_path ) || die( $fmgr->errstr );
-	} else {
-	  if ( ! can_write_file( $new_abs_file_path , $fmgr,$dircache ) ) {
-        return { success => 0  , message => "The file " . $new_abs_file_path . " can not be written." };
-	  } 
-	}
-		
+    } else {
+      if ( ! can_write_file( $new_abs_file_path , $fmgr,$dircache ) ) {
+         return { success => 0  , message => "The file " . $new_abs_file_path . " can not be written." };
+      } 
+    }
+
     if ($flag_change_entries) {
       replace_entries( $app , $asset->blog_id, $old_abs_file_url , $new_abs_file_url , $log_messages,$flag_test,$dircache);
     }
     if ($flag_change_assets) {
- 	  replace_assets( $app , $asset->blog_id, $old_abs_file_url , $new_abs_file_url , $log_messages,$flag_test,$dircache);
+      replace_assets( $app , $asset->blog_id, $old_abs_file_url , $new_abs_file_url , $log_messages,$flag_test,$dircache);
     }
     if (! $flag_test) {
-	  local_log( "file move: '" . $old_abs_file_path . "' -> '" . $new_abs_file_path , $log_messages );	
+      local_log( "file move: '" . $old_abs_file_path . "' -> '" . $new_abs_file_path , $log_messages );	
     }
   }
   my $log_message = join( "\n" , @$log_messages );
@@ -180,19 +180,19 @@ sub replace_entries {
     my $text_more = $entry->text_more;
     my $excerpt = $entry->excerpt;
 
-   	my $num1 = ( $text =~ s!$quoted_old_url!$new_url!g );
-   	my $num2 = ( $text_more =~ s!$quoted_old_url!$new_url!g );
-   	my $num3 = ( $excerpt =~ s!$quoted_old_url!$new_url!g );
+    my $num1 = ( $text =~ s!$quoted_old_url!$new_url!g );
+    my $num2 = ( $text_more =~ s!$quoted_old_url!$new_url!g );
+    my $num3 = ( $excerpt =~ s!$quoted_old_url!$new_url!g );
 
     if ($num1>0 || $num2>0 || $num3>0) {
         local_log( "> Entry: " . $entry->id );
     }
     if (! $flag_test) {
       if ($num1>0) {
-	      $entry->text( $text );
+          $entry->text( $text );
           local_log( "change text: Entry " . $entry->id . " with  " . $num1 . " times." , $log_messages );
       }
-	  if ($num2>0) {
+      if ($num2>0) {
           $entry->text_more( $text_more );
           local_log( "change text_more: Entry " . $entry->id . " with  " . $num2 . " times." , $log_messages );
       }
@@ -201,7 +201,7 @@ sub replace_entries {
           local_log( "change excerpt: Entry " . $entry->id . " with " . $num3 . " times." , $log_messages );
       }
       if ($num1>0 || $num2>0 || $num3>0) {
-	      $entry->save;
+        $entry->save;
       }
     }
   }
@@ -215,9 +215,9 @@ sub replace_assets {
   my $fmgr = MT::FileMgr->new('Local');
 
   while (my $asset = $iter->()) {
-  	if (my $data = $fmgr->get_data( $asset->file_path ) ) {
-		my $num = ( $data =~ s!$quoted_old_url!$new_url!g );
-		if ($num>0) {
+    if (my $data = $fmgr->get_data( $asset->file_path ) ) {
+        my $num = ( $data =~ s!$quoted_old_url!$new_url!g );
+        if ($num>0) {
           local_log( "> asset html: " . $asset->id );
           if (! $flag_test) {
             $fmgr->put_data($data,$asset->file_path);
@@ -225,10 +225,10 @@ sub replace_assets {
           } else {
             if ( ! can_write_file( $asset->file_path , $fmgr,$dircache ) ) {
               return { success => 0  , message => "The file " . $asset->file_path . " can not be written." };
-	        }
+            }
           }
         }
-  	}  	
+     }
   }
 
 }
