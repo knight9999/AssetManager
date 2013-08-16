@@ -40,6 +40,7 @@ use vars qw( %Lexicon );
   'validation.file [_1] can not be written.' => 'ファイル [_1]を書き込めません。',
   'tmpl.back_to_item_list' => 'アイテム一覧に戻る',
   'tmpl.change_itempath' => 'アイテムの移動(パスの変更)',
+  'tmpl.complete_change_itempath' => 'アイテムの移動完了',
   'tmpl.number of target items max [_1]' => '変更対象となるアイテム数(最大は:[_1])', 
   'tmpl.selected item path common part' => '選択したアイテムのパスの共通部分',
   'tmpl.new path common part' => '新しいパスの共通部分(最後は/で終わります)',

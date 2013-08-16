@@ -51,6 +51,7 @@ sub hndl_method {
   if (scalar( @ids ) > $my_max) {
     my %param;
     $param{message} = $plugin->translate("validation.too much items, smaller than [_1].", $my_max);
+    $param{page_title} = $plugin->translate( 'tmpl.change_itempath' );
     return $app->load_tmpl('error.tmpl',\%param);
   } 
   
@@ -59,12 +60,14 @@ sub hndl_method {
     if ($asset->blog_id != $blog_id) {
       my %param;
       $param{message} = $plugin->translate("validation.all assets must blongs_to blog [_1] ( [_2] )." , $blog->name , $blog->id );
+      $param{page_title} = $plugin->translate( 'tmpl.change_itempath' );
       return $app->load_tmpl('error.tmpl',\%param);
     }
     if ($asset->parent) {
       my %param;
       $param{message} = $plugin->translate("validation.asset [_1] can not moved because of parent." , $asset_id );
 #      $param{message} = "Assets with parent can not moved ( for asset id = " . $asset_id . ")";
+      $param{page_title} = $plugin->translate( 'tmpl.change_itempath' );
       return $app->load_tmpl('error.tmpl',\%param);
       
     }
@@ -93,6 +96,7 @@ sub hndl_method {
   $param{flag_change_entries} = 1;
   $param{flag_change_assets} = 1;
   $param{flag_test} = 1;
+  $param{page_title} = $plugin->translate( 'tmpl.change_itempath' );
   $app->load_tmpl('input.tmpl',\%param);
 }
 
@@ -166,10 +170,12 @@ sub action_finish {
       $param{flag_change_assets} = $flag_change_assets;
       $param{flag_test} = $flag_test;
       $param{test_result} = $result->{success} if $flag_test;
+      $param{page_title} = $plugin->translate( 'tmpl.change_itempath' );
       return $app->load_tmpl('input.tmpl',\%param);
     }
 
     my %param;
+    $param{page_title} = $plugin->translate( 'tmpl.complete_change_itempath' );
     $app->load_tmpl('finish.tmpl',\%param);
 }
 
