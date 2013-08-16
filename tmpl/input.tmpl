@@ -1,0 +1,69 @@
+<$mt:include name="include/header.tmpl"$>
+<script type="text/javascript">
+function validate(f) {
+    if (!is_valid_path(f.new_path.value)){
+        alert(trans('[_1] contains a character that is invalid when used in a directory name: [_2]', '<__trans phrase="Upload Destination" escape="js">', f.new_path.value));
+        return false;
+    }
+}
+
+function is_valid_path(path_){
+    var str = path_.replace(/[ "%<>\[\\\]\^`{\|}~$\+,\/:;=\?@]/g, "");
+    str = encodeURIComponent(str);
+    if (str.indexOf('%') != -1) {
+        return false;
+    }
+    if (str.match(/\.\./)) {
+        return false;
+    }
+    return true;
+}
+
+</script>
+
+
+ <h3>アイテムパスの変更</h3>
+ 
+ <div>変更対象となるアイテム数(最大：<$mt:var name="max_converts"$>)</div>
+ <div><$mt:getVar name="assets_count" $></div>
+
+<div style="margin:20px;"></div>
+
+ <div>選択したアイテムのパスの共通部分</div>
+ <div><$mt:getVar name="old_path" $> </div>
+
+<div style="margin:20px;"></div>
+
+ <div>新しい共通部分 (最後は/で終わります)</div>
+<form action="<mt:var name="script_url">?__mode=asset_manager&blog_id=<mt:var name="blog_id"\>" method="post" onsubmit="return validate(this)">
+
+<input type="hidden" name="asset_ids" value="<mt:var name="asset_ids"/>" />
+<input type="hidden" name="old_path" value="<mt:var name="old_path"/>" />
+<input type="text" name="new_path" value="<mt:var name="new_path"/>" />
+<br />
+<input type="checkbox" name="flag_change_entries" value="1" <mt:if name="flag_change_entries">checked=checked</mt:if> /> エントリーの記事の本文、もっと読む、概要に埋め込まれたurlも変更する 
+<br />
+<input type="checkbox" name="flag_change_assets" value="1" <mt:if name="flag_change_assets">checked=checked</mt:if> /> アイテム (htmlファイル)に埋め込まれたurlも変更する  
+<br />
+<br />
+<input type="checkbox" name="flag_test" value="1" <mt:if name="flag_test">checked=checked</mt:if> /> テスト実行
+<br />  
+
+
+<div style="margin:20px;"></div>
+<mt:if name="validate_message">
+<div style="color: #ff3f3f"><b><mt:var name="validate_message"></b></div>
+</mt:if>
+<mt:if name="test_result">
+<div style="color: #ff3f3f"><b>Test OK</b></div>
+</mt:if>
+<input type="submit" name="commit" value="変更" />
+</form>
+
+<div style="margin:20px;"></div>
+
+<p>※ %rは、ブログ／ウェブサイトのルートを表します。<br />
+AssetManagerプラグインでは、%rから始まるディレクトリにしか移動することは出来ません。</p>
+
+<$mt:include name="include/footer.tmpl"$>
+
