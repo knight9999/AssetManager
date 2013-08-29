@@ -27,6 +27,7 @@ use vars qw( %Lexicon );
 '<li>AssetManagerLocalLogOff<p>1にすると、ローカルログ出力をしなくなります。</p></li>'.
 '<li>AssetManagerLocalLogFile<p>デフォルトで、/tmp/に出力しているローカルログディレクトリを変更出来ます。書き込み可能な実在するディレクトリを指定してください。</p></li>'.
 '</ul>',
+  'list_properties.path' => 'パス',
   'list_actions.change_path' => '移動(パスの変更)',
   'validation.too much items, smaller than [_1].' => 'アイテムの選択数が多すぎます。[_1]つ以下にして下さい。',
   'validation.all assets must blongs_to blog [_1] ( [_2] ).' => '移動すべてのアイテムはブログ[_1] (id: [_2])に属している必要があります。',

@@ -14,7 +14,7 @@ applications:
 list_properties:
 	asset:
 		file_path:
-			label: パス
+			label: list_properties.path
 			auto: 1
 			display: default
 			bulk_html: $AssetManager::AssetManager::Plugin::file_path_bulk_html
