@@ -22,8 +22,11 @@ function is_valid_path(path_){
 </script>
 
  
- <div><__trans phrase='tmpl.number of target items max [_1]' params='<$mt:var name="max_converts"$>'></div>
- <div><$mt:getVar name="assets_count" $></div>
+ <div><__trans phrase='tmpl.number of target items is [_1] / max [_2]' params='<$mt:getVar name="assets_count" $>%%<$mt:var name="max_converts"$>'> </div>
+
+<ul style="margin-top:10px;">
+<mt:loop name="asset_path_list"><li style="margin:0px;"><mt:var name="__value__"/></li></mt:loop>
+</ul>
 
 <div style="margin:20px;"></div>
 

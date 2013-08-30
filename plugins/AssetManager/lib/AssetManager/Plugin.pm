@@ -73,11 +73,12 @@ sub hndl_method {
     }
   }      
   
+  my $asset_path_list = [];
   
   for my $id (@ids) {
     my $asset = MT::Asset->load( $id );
     my $path = $asset->MT::Asset::SUPER::file_path();
-
+    push (@$asset_path_list , $path );
     if ($common_path) {
         $common_path = common_path_of( $common_path , $path );
     } else {
@@ -92,6 +93,7 @@ sub hndl_method {
   $param{old_path} = $common_path;
   $param{new_path} = $common_path;
   $param{asset_ids} = join(',',@ids);
+  $param{asset_path_list} = $asset_path_list;
   $param{assets_count} = scalar( @ids );
   $param{flag_change_entries} = 1;
   $param{flag_change_assets} = 1;
@@ -159,6 +161,12 @@ sub action_finish {
     } );
 
     if ($flag_test || ! $result->{success}) {
+      my $asset_path_list = [];
+      for my $id (@asset_ids) {
+        my $asset = MT::Asset->load( $id );
+        my $path = $asset->MT::Asset::SUPER::file_path();
+        push (@$asset_path_list , $path );
+      }
       my %param;
       $param{max_converts} = $my_max;
       $param{validate_message} = $result->{message};
@@ -166,6 +174,7 @@ sub action_finish {
       $param{new_path} = $new_path;
       $param{asset_ids} = $asset_ids_str;
       $param{assets_count} = scalar( @asset_ids ); 
+      $param{asset_path_list} = $asset_path_list;
       $param{flag_change_entries} = $flag_change_entries;
       $param{flag_change_assets} = $flag_change_assets;
       $param{flag_test} = $flag_test;
