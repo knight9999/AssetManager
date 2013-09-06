@@ -106,10 +106,10 @@ sub convert {
     my $quote_old_url = quotemeta $old_url;
     $new_file_url =~ s!^$quote_old_url!$new_url!;
 
-    $asset->file_path($new_file_path);
-    $asset->url($new_file_url);
-
     if (! $flag_test) {
+      $asset->file_path($new_file_path);
+      $asset->url($new_file_url);
+
       $asset->save;
     }
 #    $asset->clear_cache;
