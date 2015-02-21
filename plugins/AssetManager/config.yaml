@@ -1,34 +1,34 @@
 id: AssetManager
 name: AssetManager
-version: 0.1.1
+version: 0.1.2
 description: <__trans phrase="_PLUGIN_DESCRIPTION">
 author_name: 'Kenichi Naito'
 l10n_class: AssetManager::L10N
 
 applications:
-    cms:
-        methods:
-            asset_manager: $AssetManager::AssetManager::Plugin::hndl_method
+  cms:
+    methods:
+      asset_manager: $AssetManager::AssetManager::Plugin::hndl_method
 #            asset_manager: $AssetManager::AssetManager::Plugin::hndl_form
 
 list_properties:
-	asset:
-		file_path:
-			label: list_properties.path
-			auto: 1
-			display: default
-			bulk_html: $AssetManager::AssetManager::Plugin::file_path_bulk_html
-		url:
-			label: URL
-			auto: 1
+  asset:
+    file_path:
+      label: list_properties.path
+      auto: 1
+      display: default
+      bulk_html: $AssetManager::AssetManager::Plugin::file_path_bulk_html
+    url:
+      label: URL
+      auto: 1
 
 list_actions:
-	asset:
-		change_path:
-			label: list_actions.change_path
-			js_message: change path
+  asset:
+    change_path:
+      label: list_actions.change_path
+      js_message: change path
 #			code: $AssetManager::AssetManager::Plugin::action_code
-			no_prompt: 1
-			condition: $AssetManager::AssetManager::Plugin::action_condition
-			mode: asset_manager
+      no_prompt: 1
+      condition: $AssetManager::AssetManager::Plugin::action_condition
+      mode: asset_manager
             

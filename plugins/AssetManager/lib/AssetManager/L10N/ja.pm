@@ -53,7 +53,7 @@ use vars qw( %Lexicon );
   . 'AssetManagerプラグインでは、%rから始まるディレクトリにしか移動することは出来ません。</p>',
   'tmpl.complete change' => '変更作業が完了しました',
   'tmpl.rebuild if entries are changed.' => 'Entryを変更している場合は、再構築を忘れないようにしてください。',
-  'tmpl.testOK' => 'テストが成功しました',
+  'tmpl.testOK' => 'テストが成功しました。テストのチェックを外して、変更ボタンを押して下さい',
   
 );
 
